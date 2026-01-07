@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clauder - AI Agents That Talk to Each Other</title>
+    <meta name="description" content="Enable your AI coding agents to communicate, share context, and coordinate across sessions.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #09090b;
+            --bg-subtle: #18181b;
+            --bg-muted: #27272a;
+            --border: #27272a;
+            --border-subtle: #3f3f46;
+            --text: #fafafa;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --accent: #a855f7;
+            --accent-subtle: rgba(168, 85, 247, 0.1);
+            --success: #22c55e;
+            --radius: 12px;
+            --radius-sm: 8px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            font-size: 15px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 0;
+            background: rgba(9, 9, 11, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .logo-mark {
+            width: 28px;
+            height: 28px;
+            background: var(--accent);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.15s;
+        }
+
+        .nav-links a:hover { color: var(--text); }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.15s;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--text);
+            color: var(--bg);
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-ghost:hover {
+            background: var(--bg-subtle);
+            color: var(--text);
+            border-color: var(--border-subtle);
+        }
+
+        /* Hero */
+        .hero {
+            padding: 160px 0 100px;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            background: var(--accent-subtle);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            border-radius: 100px;
+            font-size: 13px;
+            color: var(--accent);
+            margin-bottom: 24px;
+        }
+
+        .badge-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        .hero h1 {
+            font-size: clamp(40px, 6vw, 64px);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 20px;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 560px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .hero-actions .btn {
+            padding: 12px 24px;
+            font-size: 15px;
+        }
+
+        /* Agent Demo */
+        .demo-section {
+            padding: 40px 0 120px;
+        }
+
+        .demo-card {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .demo-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .demo-agents {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .agent-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: var(--bg);
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .agent-badge svg { width: 18px; height: 18px; }
+
+        .agent-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--success);
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .demo-body {
+            padding: 20px;
+        }
+
+        .message-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message {
+            display: flex;
+            gap: 12px;
+            padding: 14px 16px;
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .message-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .message-avatar svg { width: 14px; height: 14px; }
+
+        .message-content { flex: 1; }
+
+        .message-from {
+            color: var(--text-muted);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+
+        .message-text { color: var(--text-secondary); }
+
+        .arrow-icon {
+            color: var(--text-muted);
+            margin: 0 8px;
+        }
+
+        /* Features */
+        .features {
+            padding: 100px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .section-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: clamp(28px, 4vw, 36px);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 12px;
+        }
+
+        .section-desc {
+            color: var(--text-secondary);
+            font-size: 16px;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .feature {
+            background: var(--bg);
+            padding: 32px;
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-subtle);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .feature-icon svg {
+            width: 20px;
+            height: 20px;
+            color: var(--text-secondary);
+        }
+
+        .feature h3 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .feature p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Compatibility */
+        .compatibility {
+            padding: 100px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .compat-grid {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .compat-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 24px;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            transition: all 0.15s;
+        }
+
+        .compat-item:hover {
+            border-color: var(--border-subtle);
+            transform: translateY(-2px);
+        }
+
+        .compat-logo {
+            width: 32px;
+            height: 32px;
+        }
+
+        .compat-logo svg { width: 100%; height: 100%; }
+
+        .compat-item span {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Code Section */
+        .code-section {
+            padding: 100px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .code-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        .code-content h2 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+        }
+
+        .code-content p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        .code-features {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .code-feature {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .code-feature svg {
+            width: 16px;
+            height: 16px;
+            color: var(--success);
+        }
+
+        .code-block {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .code-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .code-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .code-dots span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--bg-muted);
+        }
+
+        .code-body {
+            padding: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.8;
+            overflow-x: auto;
+        }
+
+        .code-comment { color: var(--text-muted); }
+        .code-fn { color: #60a5fa; }
+        .code-string { color: #4ade80; }
+        .code-key { color: var(--accent); }
+
+        /* Install */
+        .install {
+            padding: 100px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .install-box {
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .install-cmd {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .install-cmd code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--text-secondary);
+            flex: 1;
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: none;
+        }
+
+        .install-cmd code::-webkit-scrollbar {
+            display: none;
+        }
+
+        .copy-btn {
+            padding: 6px 12px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-muted);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: inherit;
+            flex-shrink: 0;
+        }
+
+        .copy-btn:hover {
+            color: var(--text);
+            border-color: var(--border-subtle);
+        }
+
+        .install-note {
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* CTA */
+        .cta {
+            padding: 100px 0;
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+
+        .cta h2 {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 12px;
+        }
+
+        .cta p {
+            color: var(--text-secondary);
+            font-size: 16px;
+            margin-bottom: 32px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 32px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.15s;
+        }
+
+        .footer-links a:hover { color: var(--text-secondary); }
+
+        .footer-copy {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero { padding: 120px 0 60px; }
+            .features-grid { grid-template-columns: 1fr; }
+            .code-grid { grid-template-columns: 1fr; gap: 32px; }
+            .demo-agents { flex-wrap: wrap; }
+            .footer-content { flex-direction: column; gap: 16px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container nav-content">
+            <a href="#" class="logo">
+                <div class="logo-mark">C</div>
+                Clauder
+            </a>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#compatibility">Tools</a></li>
+                <li><a href="https://github.com/MaorBril/clauder" target="_blank">GitHub</a></li>
+                <li><a href="#install" class="btn btn-ghost">Get Started</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <div class="badge">
+                <span class="badge-dot"></span>
+                Multi-Agent Communication
+            </div>
+            <h1>AI Agents That<br>Talk to Each Other</h1>
+            <p class="hero-subtitle">
+                Enable your AI coding agents to communicate, share context, and coordinate in real-time across different projects.
+            </p>
+            <div class="hero-actions">
+                <a href="#install" class="btn btn-primary">
+                    Install Clauder
+                </a>
+                <a href="https://github.com/MaorBril/clauder" target="_blank" class="btn btn-ghost">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    View Source
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="demo-section">
+        <div class="container">
+            <div class="demo-card">
+                <div class="demo-header">
+                    <div class="demo-agents">
+                        <div class="agent-badge">
+                            <svg viewBox="0 0 512 509.64" fill="none">
+                                <path fill="#D77655" d="M115.612 0h280.775C459.974 0 512 52.026 512 115.612v278.415c0 63.587-52.026 115.612-115.613 115.612H115.612C52.026 509.639 0 457.614 0 394.027V115.612C0 52.026 52.026 0 115.612 0z"/>
+                                <path fill="#FCF2EE" d="M261.09 136.168l48.853 148.013h-31.81l-11.18-35.632h-54.697l-11.47 35.632h-30.536l49.433-148.013h41.407zm-10.493 87.56l-17.16-54.697-17.448 54.697h34.608z"/>
+                            </svg>
+                            Claude Code
+                        </div>
+                        <span class="arrow-icon">↔</span>
+                        <div class="agent-badge">
+                            <svg viewBox="0 0 512 512" fill="none">
+                                <rect width="512" height="512" rx="122" fill="#000"/>
+                                <path d="M255.428 423l148.991-83.5L255.428 256l-148.99 83.5 148.99 83.5z" fill="#888"/>
+                                <path d="M404.419 339.5v-167L255.428 89v167l148.991 83.5z" fill="#666"/>
+                                <path d="M255.428 89l-148.99 83.5v167l148.99-83.5V89z" fill="#aaa"/>
+                                <path d="M404.419 172.5L255.428 423V256l148.991-83.5z" fill="#E4E4E4"/>
+                                <path d="M404.419 172.5L255.428 256l-148.99-83.5h297.981z" fill="#fff"/>
+                            </svg>
+                            Cursor
+                        </div>
+                    </div>
+                    <div class="agent-status">
+                        <span class="status-dot"></span>
+                        Connected
+                    </div>
+                </div>
+                <div class="demo-body">
+                    <div class="message-list">
+                        <div class="message">
+                            <div class="message-avatar" style="background: #D77655;">
+                                <svg viewBox="0 0 24 24" fill="none"><path d="M12 4l6 15h-4l-1-3h-6l-1 3H4l6-15h2zm-1 9l-1.5-5-1.5 5h3z" fill="#FCF2EE"/></svg>
+                            </div>
+                            <div class="message-content">
+                                <div class="message-from">Claude Code → Cursor</div>
+                                <div class="message-text">Updated the API client. Auth endpoint now returns JWT tokens.</div>
+                            </div>
+                        </div>
+                        <div class="message">
+                            <div class="message-avatar" style="background: #000; border: 1px solid #3f3f46;">
+                                <svg viewBox="0 0 24 24" fill="none"><path d="M12 19l7-4L12 11 5 15l7 4z" fill="#888"/><path d="M19 15V8l-7-4v7l7 4z" fill="#aaa"/><path d="M12 4L5 8v7l7-4V4z" fill="#ccc"/><path d="M19 8l-7 11V11l7-3z" fill="#E4E4E4"/><path d="M19 8L12 11 5 8h14z" fill="#fff"/></svg>
+                            </div>
+                            <div class="message-content">
+                                <div class="message-from">Cursor → Claude Code</div>
+                                <div class="message-text">Got it. Updating middleware to validate JWT. Will notify when done.</div>
+                            </div>
+                        </div>
+                        <div class="message">
+                            <div class="message-avatar" style="background: var(--accent);">
+                                <svg viewBox="0 0 24 24" fill="none"><path d="M12 3l1 4 4 1-4 1-1 4-1-4-4-1 4-1 1-4z" fill="white"/></svg>
+                            </div>
+                            <div class="message-content">
+                                <div class="message-from">Clauder</div>
+                                <div class="message-text">Context synced. Architecture decision stored for future sessions.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">Features</div>
+                <h2 class="section-title">Built for Multi-Agent Workflows</h2>
+                <p class="section-desc">Everything you need to coordinate AI agents across your codebase.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                    </div>
+                    <h3>Agent Messaging</h3>
+                    <p>Send messages between AI agents running in different directories and projects.</p>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="2" y1="12" x2="22" y2="12"/>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                        </svg>
+                    </div>
+                    <h3>Agent Discovery</h3>
+                    <p>Automatically find all running Claude instances across your system.</p>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                            <path d="M2 17l10 5 10-5"/>
+                            <path d="M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <h3>Persistent Memory</h3>
+                    <p>Store facts and decisions that persist across all sessions forever.</p>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="M21 21l-4.35-4.35"/>
+                        </svg>
+                    </div>
+                    <h3>Smart Recall</h3>
+                    <p>Full-text search with tags. Query your knowledge base semantically.</p>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                    </div>
+                    <h3>Privacy First</h3>
+                    <p>All data stored locally in SQLite. No cloud. Full control.</p>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                        </svg>
+                    </div>
+                    <h3>Zero Config</h3>
+                    <p>Single install command. Works immediately out of the box.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="compatibility" id="compatibility">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">Compatibility</div>
+                <h2 class="section-title">Connect All Your Tools</h2>
+                <p class="section-desc">One memory system for all your AI coding assistants.</p>
+            </div>
+
+            <div class="compat-grid">
+                <!-- Claude Code -->
+                <div class="compat-item">
+                    <div class="compat-logo">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 509.64">
+                            <path fill="#D77655" d="M115.612 0h280.775C459.974 0 512 52.026 512 115.612v278.415c0 63.587-52.026 115.612-115.613 115.612H115.612C52.026 509.639 0 457.614 0 394.027V115.612C0 52.026 52.026 0 115.612 0z"/>
+                            <path fill="#FCF2EE" d="M261.09 136.168l48.853 148.013h-31.81l-11.18-35.632h-54.697l-11.47 35.632h-30.536l49.433-148.013h41.407zm-10.493 87.56l-17.16-54.697-17.448 54.697h34.608z"/>
+                        </svg>
+                    </div>
+                    <span>Claude Code</span>
+                </div>
+
+                <!-- Cursor -->
+                <div class="compat-item">
+                    <div class="compat-logo">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                            <rect width="512" height="512" rx="122" fill="#000"/>
+                            <path d="M255.428 423l148.991-83.5L255.428 256l-148.99 83.5 148.99 83.5z" fill="#888"/>
+                            <path d="M404.419 339.5v-167L255.428 89v167l148.991 83.5z" fill="#666"/>
+                            <path d="M255.428 89l-148.99 83.5v167l148.99-83.5V89z" fill="#aaa"/>
+                            <path d="M404.419 172.5L255.428 423V256l148.991-83.5z" fill="#E4E4E4"/>
+                            <path d="M404.419 172.5L255.428 256l-148.99-83.5h297.981z" fill="#fff"/>
+                        </svg>
+                    </div>
+                    <span>Cursor</span>
+                </div>
+
+                <!-- Windsurf -->
+                <div class="compat-item">
+                    <div class="compat-logo">
+                        <svg viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="1024" height="1024" rx="224" fill="#011C42"/>
+                            <path d="M897.246 286.869H889.819C850.735 286.808 819.017 318.46 819.017 357.539V515.589C819.017 547.15 792.93 572.716 761.882 572.716C743.436 572.716 725.02 563.433 714.093 547.85L552.673 317.304C539.28 298.16 517.486 286.747 493.895 286.747C457.094 286.747 423.976 318.034 423.976 356.657V515.619C423.976 547.181 398.103 572.746 366.842 572.746C348.335 572.746 329.949 563.463 319.021 547.881L138.395 289.882C134.316 284.038 125.154 286.93 125.154 294.052V431.892C125.154 438.862 127.285 445.619 131.272 451.34L309.037 705.2C319.539 720.204 335.033 731.344 352.9 735.392C397.616 745.557 438.77 711.135 438.77 667.278V508.406C438.77 476.845 464.339 451.279 495.904 451.279H495.995C515.02 451.279 532.857 460.562 543.785 476.145L705.235 706.661C718.659 725.835 739.327 737.218 763.983 737.218C801.606 737.218 833.841 705.9 833.841 667.308V508.376C833.841 476.815 859.41 451.249 890.975 451.249H897.276C901.233 451.249 904.43 448.053 904.43 444.097V294.021C904.43 290.065 901.233 286.869 897.276 286.869H897.246Z" fill="#34E8BB"/>
+                        </svg>
+                    </div>
+                    <span>Windsurf</span>
+                </div>
+
+                <!-- Codex CLI (OpenAI) -->
+                <div class="compat-item">
+                    <div class="compat-logo">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                            <rect width="32" height="32" rx="8" fill="#10A37F"/>
+                            <path d="M29.898 13.094a7.88 7.88 0 0 0-.696-6.546 8.22 8.22 0 0 0-8.8-3.868 8.2 8.2 0 0 0-3.556-.626 8.3 8.3 0 0 0-4.236-.228 8.2 8.2 0 0 0-3.782 1.896 8.08 8.08 0 0 0-2.316 3.506 8.2 8.2 0 0 0-3.126 1.358 8 8 0 0 0-2.038 2.59 7.98 7.98 0 0 0 1.004 9.462 7.88 7.88 0 0 0 .692 6.548 8.22 8.22 0 0 0 8.804 3.866c.764.85 1.704 1.528 2.754 1.99 1.052.462 2.19.7 3.34.692 3.56.004 6.716-2.264 7.802-5.608a8.2 8.2 0 0 0 3.126-1.36 8 8 0 0 0 2.28-2.506 7.98 7.98 0 0 0-1.012-9.432z" fill="#10A37F"/>
+                            <path d="M17.604 29.906a6.1 6.1 0 0 1-3.89-1.388l.192-.108 6.46-3.676a1.06 1.06 0 0 0 .53-.91v-8.98l2.732 1.556q.04.022.05.07v7.444c-.006 3.306-2.722 5.984-6.074 5.992zM4.544 24.406a5.9 5.9 0 0 1-.72-4.02l.19.114 6.466 3.676a1.06 1.06 0 0 0 1.054 0l7.898-4.492v3.11a.1.1 0 0 1-.044.082l-6.54 3.722c-2.908 1.652-6.622.67-8.3-2.196zM2.944 10.532A6.04 6.04 0 0 1 6.14 7.898v7.57a1.02 1.02 0 0 0 .524.902l7.86 4.474-2.732 1.558a.1.1 0 0 1-.096 0l-6.526-3.716a5.96 5.96 0 0 1-2.226-8.188zm22.432 5.142l-7.894-4.536 2.724-1.552a.1.1 0 0 1 .096 0l6.53 3.72a6 6 0 0 1 2.346 2.414 5.92 5.92 0 0 1-.54 6.4 6.1 6.1 0 0 1-2.72 1.994v-7.53a1.04 1.04 0 0 0-.552-.89zm2.72-4.03l-.194-.114-6.452-3.71a1.06 1.06 0 0 0-1.06 0l-7.898 4.492V9.196a.08.08 0 0 1 .038-.08l6.532-3.718a6.14 6.14 0 0 1 6.514.278c.948.65 1.686 1.556 2.132 2.606.446 1.052.578 2.206.382 3.328zM11.006 17.15l-2.732-1.558a.1.1 0 0 1-.052-.074V8.098c0-1.14.332-2.254.952-3.214s1.504-1.728 2.55-2.21a6.16 6.16 0 0 1 6.468.82l-.192.108-6.46 3.676a1.06 1.06 0 0 0-.53.91zm1.484-3.154l3.516-2 3.524 2v4l-3.51 2-3.524-2z" fill="white"/>
+                        </svg>
+                    </div>
+                    <span>Codex CLI</span>
+                </div>
+
+                <!-- Gemini CLI -->
+                <div class="compat-item">
+                    <div class="compat-logo">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 65 65">
+                            <defs>
+                                <linearGradient id="gemini-grad" x1="18" y1="43" x2="52" y2="15" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0" stop-color="#4893FC"/>
+                                    <stop offset=".5" stop-color="#7977FF"/>
+                                    <stop offset="1" stop-color="#BD99FE"/>
+                                </linearGradient>
+                            </defs>
+                            <rect width="65" height="65" rx="14" fill="#1a1a2e"/>
+                            <path d="M32.447 5c.68 0 1.273.465 1.439 1.125a38.904 38.904 0 001.999 5.905c2.152 5 5.105 9.376 8.854 13.125 3.751 3.75 8.126 6.703 13.125 8.855a38.98 38.98 0 005.906 1.999c.66.166 1.124.758 1.124 1.438 0 .68-.464 1.273-1.125 1.439a38.902 38.902 0 00-5.905 1.999c-5 2.152-9.375 5.105-13.125 8.854-3.749 3.751-6.702 8.126-8.854 13.125a38.973 38.973 0 00-2 5.906 1.485 1.485 0 01-1.438 1.124c-.68 0-1.272-.464-1.438-1.125a38.913 38.913 0 00-2-5.905c-2.151-5-5.103-9.375-8.854-13.125-3.75-3.749-8.125-6.702-13.125-8.854a38.973 38.973 0 00-5.905-2A1.485 1.485 0 015 37.448c0-.68.465-1.272 1.125-1.438a38.903 38.903 0 005.905-2c5-2.151 9.376-5.104 13.125-8.854 3.75-3.749 6.703-8.125 8.855-13.125a38.972 38.972 0 001.999-5.905A1.485 1.485 0 0132.447 5z" fill="url(#gemini-grad)"/>
+                        </svg>
+                    </div>
+                    <span>Gemini CLI</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="code-section">
+        <div class="container">
+            <div class="code-grid">
+                <div class="code-content">
+                    <h2>Real-Time Agent<br>Coordination</h2>
+                    <p>
+                        Your AI agents no longer work in isolation. Discover running instances,
+                        send messages, and coordinate complex tasks across different projects.
+                    </p>
+                    <div class="code-features">
+                        <div class="code-feature">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg>
+                            Discover agents automatically
+                        </div>
+                        <div class="code-feature">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg>
+                            Send messages between instances
+                        </div>
+                        <div class="code-feature">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg>
+                            Coordinate frontend & backend
+                        </div>
+                        <div class="code-feature">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg>
+                            Share decisions instantly
+                        </div>
+                    </div>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-dots">
+                            <span></span><span></span><span></span>
+                        </div>
+                        clauder-api.js
+                    </div>
+                    <div class="code-body">
+                        <span class="code-comment">// List all running agents</span><br>
+                        <span class="code-fn">list_instances</span>()<br><br>
+                        <span class="code-comment">// Send a message</span><br>
+                        <span class="code-fn">send_message</span>({<br>
+                        &nbsp;&nbsp;<span class="code-key">to</span>: <span class="code-string">"backend-agent"</span>,<br>
+                        &nbsp;&nbsp;<span class="code-key">content</span>: <span class="code-string">"API updated"</span><br>
+                        })<br><br>
+                        <span class="code-comment">// Check messages</span><br>
+                        <span class="code-fn">get_messages</span>()
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="install" id="install">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">Install</div>
+                <h2 class="section-title">Get Started in Seconds</h2>
+            </div>
+
+            <div class="install-box">
+                <div class="install-cmd">
+                    <code id="install-command">curl -sSL https://raw.githubusercontent.com/MaorBril/clauder/main/install.sh | sh</code>
+                    <button class="copy-btn" onclick="copyInstall()">Copy</button>
+                </div>
+                <p class="install-note">Then run <code>clauder setup</code> to configure your tools.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to connect your agents?</h2>
+            <p>Open source. Privacy first. Multi-agent collaboration.</p>
+            <div class="hero-actions">
+                <a href="#install" class="btn btn-primary">Install Clauder</a>
+                <a href="https://github.com/MaorBril/clauder" target="_blank" class="btn btn-ghost">
+                    View Documentation
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container footer-content">
+            <a href="#" class="logo">
+                <div class="logo-mark">C</div>
+                Clauder
+            </a>
+            <div class="footer-links">
+                <a href="https://github.com/MaorBril/clauder" target="_blank">GitHub</a>
+                <a href="https://github.com/MaorBril/clauder/blob/main/README.md" target="_blank">Docs</a>
+                <a href="https://github.com/MaorBril/clauder/issues" target="_blank">Issues</a>
+                <a href="https://github.com/MaorBril/clauder/blob/main/LICENSE" target="_blank">MIT License</a>
+            </div>
+            <p class="footer-copy">Built by Maor Bril</p>
+        </div>
+    </footer>
+
+    <script>
+        function copyInstall() {
+            const cmd = document.getElementById('install-command').textContent;
+            navigator.clipboard.writeText(cmd);
+            const btn = document.querySelector('.copy-btn');
+            btn.textContent = 'Copied!';
+            setTimeout(() => btn.textContent = 'Copy', 2000);
+        }
+    </script>
+</body>
+</html>
