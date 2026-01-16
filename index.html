@@ -636,6 +636,240 @@
             font-size: 13px;
         }
 
+        /* Visual Map Section */
+        .visual-map {
+            padding: 100px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .map-showcase {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        .map-preview {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .map-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg);
+        }
+
+        .map-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .map-title svg {
+            color: var(--accent);
+        }
+
+        .map-url {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-muted);
+            padding: 4px 8px;
+            background: var(--bg-subtle);
+            border-radius: 4px;
+        }
+
+        .map-canvas {
+            position: relative;
+            height: 340px;
+            background: #0f1729;
+            overflow: hidden;
+        }
+
+        .map-canvas::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 30% 40%, rgba(34, 197, 94, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 70% 60%, rgba(168, 85, 247, 0.05) 0%, transparent 40%);
+        }
+
+        .map-connections {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .connection-line {
+            stroke: #1e3a5f;
+            stroke-width: 2;
+        }
+
+        .connection-active {
+            stroke: #f59e0b;
+            stroke-width: 2;
+        }
+
+        .hex-node {
+            position: absolute;
+            left: var(--x);
+            top: var(--y);
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .hex-node:hover {
+            transform: translate(-50%, -50%) scale(1.05);
+        }
+
+        .hex-shape {
+            width: 100px;
+            height: 115px;
+            background: linear-gradient(135deg, #1a2d4a 0%, #0f1e36 100%);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 8px;
+            position: relative;
+            border: 1px solid #1e3a5f;
+        }
+
+        .hex-shape::before {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            background: linear-gradient(135deg, #1a2d4a 0%, #0f1e36 100%);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+
+        .hex-number {
+            position: absolute;
+            top: -8px;
+            width: 24px;
+            height: 24px;
+            background: var(--accent);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+            z-index: 2;
+        }
+
+        .hex-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            text-align: center;
+        }
+
+        .hex-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .hex-status {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .hex-status.working {
+            background: var(--success);
+            color: #0a1f0a;
+        }
+
+        .hex-status.attention {
+            background: #f59e0b;
+            color: #1a0f00;
+        }
+
+        .hex-time {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .hex-connector {
+            position: absolute;
+            bottom: -12px;
+            width: 3px;
+            height: 12px;
+            background: #f59e0b;
+            border-radius: 2px;
+        }
+
+        .map-info {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .map-command {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .map-command code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 18px;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .command-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .map-features {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .map-features li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .map-features svg {
+            width: 16px;
+            height: 16px;
+            color: var(--success);
+            flex-shrink: 0;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .nav-links { display: none; }
@@ -644,6 +878,12 @@
             .code-grid { grid-template-columns: 1fr; gap: 32px; }
             .demo-agents { flex-wrap: wrap; }
             .footer-content { flex-direction: column; gap: 16px; text-align: center; }
+            .map-showcase { grid-template-columns: 1fr; }
+            .map-canvas { height: 300px; }
+            .hex-shape { width: 80px; height: 92px; }
+            .hex-name { font-size: 10px; }
+            .hex-status { font-size: 8px; padding: 2px 6px; }
+            .hex-time { font-size: 8px; }
         }
     </style>
 </head>
@@ -655,6 +895,7 @@
                 Clauder
             </a>
             <ul class="nav-links">
+                <li><a href="#visual-map">Map UI</a></li>
                 <li><a href="#features">Features</a></li>
                 <li><a href="#compatibility">Tools</a></li>
                 <li><a href="https://github.com/MaorBril/clauder" target="_blank">GitHub</a></li>
@@ -667,7 +908,7 @@
         <div class="container">
             <div class="badge">
                 <span class="badge-dot"></span>
-                Multi-Agent Communication
+                v0.6.1 — Visual Map UI
             </div>
             <h1>AI Agents That<br>Talk to Each Other</h1>
             <p class="hero-subtitle">
@@ -700,7 +941,7 @@
                                 <path fill="#D77655" d="M115.612 0h280.775C459.974 0 512 52.026 512 115.612v278.415c0 63.587-52.026 115.612-115.613 115.612H115.612C52.026 509.639 0 457.614 0 394.027V115.612C0 52.026 52.026 0 115.612 0z"/>
                                 <path fill="#FCF2EE" d="M261.09 136.168l48.853 148.013h-31.81l-11.18-35.632h-54.697l-11.47 35.632h-30.536l49.433-148.013h41.407zm-10.493 87.56l-17.16-54.697-17.448 54.697h34.608z"/>
                             </svg>
-                            Claude Code
+                            labs-service
                         </div>
                         <span class="arrow-icon">↔</span>
                         <div class="agent-badge">
@@ -712,12 +953,12 @@
                                 <path d="M404.419 172.5L255.428 423V256l148.991-83.5z" fill="#E4E4E4"/>
                                 <path d="M404.419 172.5L255.428 256l-148.99-83.5h297.981z" fill="#fff"/>
                             </svg>
-                            Cursor
+                            labs-ui
                         </div>
                     </div>
                     <div class="agent-status">
                         <span class="status-dot"></span>
-                        Connected
+                        2 agents connected
                     </div>
                 </div>
                 <div class="demo-body">
@@ -727,8 +968,8 @@
                                 <svg viewBox="0 0 24 24" fill="none"><path d="M12 4l6 15h-4l-1-3h-6l-1 3H4l6-15h2zm-1 9l-1.5-5-1.5 5h3z" fill="#FCF2EE"/></svg>
                             </div>
                             <div class="message-content">
-                                <div class="message-from">Claude Code → Cursor</div>
-                                <div class="message-text">Updated the API client. Auth endpoint now returns JWT tokens.</div>
+                                <div class="message-from">labs-service → labs-ui</div>
+                                <div class="message-text">API schema updated. New /users endpoint returns paginated results with cursor.</div>
                             </div>
                         </div>
                         <div class="message">
@@ -736,8 +977,8 @@
                                 <svg viewBox="0 0 24 24" fill="none"><path d="M12 19l7-4L12 11 5 15l7 4z" fill="#888"/><path d="M19 15V8l-7-4v7l7 4z" fill="#aaa"/><path d="M12 4L5 8v7l7-4V4z" fill="#ccc"/><path d="M19 8l-7 11V11l7-3z" fill="#E4E4E4"/><path d="M19 8L12 11 5 8h14z" fill="#fff"/></svg>
                             </div>
                             <div class="message-content">
-                                <div class="message-from">Cursor → Claude Code</div>
-                                <div class="message-text">Got it. Updating middleware to validate JWT. Will notify when done.</div>
+                                <div class="message-from">labs-ui → labs-service</div>
+                                <div class="message-text">Acknowledged. Updating React Query hooks to handle pagination. ETA: implementing now.</div>
                             </div>
                         </div>
                         <div class="message">
@@ -745,11 +986,129 @@
                                 <svg viewBox="0 0 24 24" fill="none"><path d="M12 3l1 4 4 1-4 1-1 4-1-4-4-1 4-1 1-4z" fill="white"/></svg>
                             </div>
                             <div class="message-content">
-                                <div class="message-from">Clauder</div>
-                                <div class="message-text">Context synced. Architecture decision stored for future sessions.</div>
+                                <div class="message-from">Clauder Memory</div>
+                                <div class="message-text">Stored: "API pagination uses cursor-based approach with 50 items default limit"</div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Visual Map UI Section -->
+    <section class="visual-map" id="visual-map">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">New in v0.6.1</div>
+                <h2 class="section-title">Visual Instance Map</h2>
+                <p class="section-desc">See all your running agents at a glance with the new web-based UI.</p>
+            </div>
+
+            <div class="map-showcase">
+                <div class="map-preview">
+                    <div class="map-header">
+                        <div class="map-title">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <circle cx="12" cy="12" r="3"/>
+                                <path d="M12 2v4"/>
+                                <path d="M12 18v4"/>
+                                <path d="M2 12h4"/>
+                                <path d="M18 12h4"/>
+                            </svg>
+                            Clauder Map View
+                        </div>
+                        <div class="map-url">localhost:3847</div>
+                    </div>
+                    <div class="map-canvas">
+                        <!-- Connection lines (SVG) -->
+                        <svg class="map-connections" viewBox="0 0 100 100" preserveAspectRatio="none">
+                            <line x1="30" y1="28" x2="30" y2="62" class="connection-line"/>
+                            <line x1="70" y1="28" x2="70" y2="62" class="connection-line"/>
+                            <line x1="50" y1="45" x2="50" y2="62" class="connection-line"/>
+                            <line x1="30" y1="62" x2="50" y2="62" class="connection-line connection-active"/>
+                            <line x1="50" y1="62" x2="70" y2="62" class="connection-line connection-active"/>
+                        </svg>
+                        <!-- Hexagonal nodes - top row -->
+                        <div class="hex-node" style="--x: 30%; --y: 28%;">
+                            <div class="hex-shape">
+                                <div class="hex-number">1</div>
+                                <div class="hex-content">
+                                    <span class="hex-name">labs-ui</span>
+                                    <span class="hex-status working">Working</span>
+                                    <span class="hex-time">just now</span>
+                                </div>
+                            </div>
+                            <div class="hex-connector"></div>
+                        </div>
+                        <div class="hex-node" style="--x: 70%; --y: 28%;">
+                            <div class="hex-shape">
+                                <div class="hex-number">2</div>
+                                <div class="hex-content">
+                                    <span class="hex-name">labs-service</span>
+                                    <span class="hex-status working">Working</span>
+                                    <span class="hex-time">just now</span>
+                                </div>
+                            </div>
+                            <div class="hex-connector"></div>
+                        </div>
+                        <!-- Bottom row -->
+                        <div class="hex-node" style="--x: 18%; --y: 72%;">
+                            <div class="hex-shape">
+                                <div class="hex-number" style="background: #f59e0b;">3</div>
+                                <div class="hex-content">
+                                    <span class="hex-name">clauder</span>
+                                    <span class="hex-status attention">Attention</span>
+                                    <span class="hex-time">just now</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hex-node" style="--x: 50%; --y: 72%;">
+                            <div class="hex-shape">
+                                <div class="hex-number">4</div>
+                                <div class="hex-content">
+                                    <span class="hex-name">labs-service</span>
+                                    <span class="hex-status working">Working</span>
+                                    <span class="hex-time">just now</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hex-node" style="--x: 82%; --y: 72%;">
+                            <div class="hex-shape">
+                                <div class="hex-number" style="background: #f59e0b;">5</div>
+                                <div class="hex-content">
+                                    <span class="hex-name">labs-ui</span>
+                                    <span class="hex-status attention">Attention</span>
+                                    <span class="hex-time">just now</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="map-info">
+                    <div class="map-command">
+                        <code>$ clauder ui</code>
+                        <span class="command-desc">Launch the visual map</span>
+                    </div>
+                    <ul class="map-features">
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg>
+                            See all running instances as nodes
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg>
+                            Watch messages flow in real-time
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg>
+                            Click to inspect instance details
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg>
+                            Auto-updates as agents connect
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
