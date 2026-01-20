@@ -870,6 +870,243 @@
             flex-shrink: 0;
         }
 
+        /* Wrap Feature Section */
+        .wrap-feature {
+            padding: 100px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .wrap-demo {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .terminal-pair {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .terminal {
+            flex: 1;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            overflow: hidden;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: #161b22;
+            border-bottom: 1px solid #30363d;
+        }
+
+        .terminal-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .terminal-dots .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-dots .dot.red { background: #ff5f56; }
+        .terminal-dots .dot.yellow { background: #ffbd2e; }
+        .terminal-dots .dot.green { background: #27ca40; }
+
+        .terminal-title {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .terminal-body {
+            padding: 16px;
+            min-height: 200px;
+        }
+
+        .terminal-line {
+            font-size: 13px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+
+        .terminal-line .prompt {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .terminal-line.tool-call {
+            margin-top: 12px;
+        }
+
+        .terminal-line .tool-name {
+            color: #58a6ff;
+            background: rgba(88, 166, 255, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .terminal-line.tool-params {
+            padding-left: 16px;
+            font-size: 12px;
+        }
+
+        .terminal-line .param-key {
+            color: var(--accent);
+        }
+
+        .terminal-line .param-value {
+            color: #7ee787;
+        }
+
+        .terminal-line.success {
+            margin-top: 8px;
+            color: var(--success);
+        }
+
+        .terminal-line .check-icon {
+            margin-right: 6px;
+        }
+
+        .terminal-line.notification {
+            margin-top: 12px;
+            color: #f59e0b;
+            background: rgba(245, 158, 11, 0.1);
+            padding: 6px 10px;
+            border-radius: 6px;
+            border-left: 3px solid #f59e0b;
+        }
+
+        .terminal-line .notif-icon {
+            margin-right: 6px;
+        }
+
+        .terminal-line.message-received {
+            margin-top: 8px;
+            padding-left: 16px;
+        }
+
+        .terminal-line .from-label {
+            color: var(--text-muted);
+            font-size: 11px;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .terminal-line .message-content {
+            color: #7ee787;
+            font-style: italic;
+        }
+
+        .connection-flow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 0 8px;
+        }
+
+        .flow-line {
+            width: 2px;
+            height: 40px;
+            background: linear-gradient(180deg, transparent, var(--accent), transparent);
+        }
+
+        .flow-arrow {
+            color: var(--accent);
+            animation: pulse-arrow 2s infinite;
+        }
+
+        @keyframes pulse-arrow {
+            0%, 100% { opacity: 1; transform: translateX(0); }
+            50% { opacity: 0.5; transform: translateX(4px); }
+        }
+
+        .flow-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .wrap-features {
+            display: flex;
+            gap: 32px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .wrap-feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            max-width: 240px;
+        }
+
+        .wrap-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-subtle);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: var(--accent);
+        }
+
+        .wrap-text h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .wrap-text p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .wrap-command {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 24px;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .wrap-command code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 20px;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .wrap-hint {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .wrap-hint code {
+            font-size: 13px;
+            color: var(--text-secondary);
+            background: var(--bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .nav-links { display: none; }
@@ -884,6 +1121,20 @@
             .hex-name { font-size: 10px; }
             .hex-status { font-size: 8px; padding: 2px 6px; }
             .hex-time { font-size: 8px; }
+            .terminal-pair { flex-direction: column; }
+            .connection-flow {
+                flex-direction: row;
+                padding: 8px 0;
+            }
+            .connection-flow .flow-line {
+                width: 40px;
+                height: 2px;
+            }
+            .connection-flow .flow-arrow {
+                transform: rotate(90deg);
+            }
+            .wrap-features { gap: 20px; }
+            .wrap-feature-item { max-width: 100%; }
         }
     </style>
 </head>
@@ -895,6 +1146,7 @@
                 Clauder
             </a>
             <ul class="nav-links">
+                <li><a href="#wrap">Wrap</a></li>
                 <li><a href="#visual-map">Map UI</a></li>
                 <li><a href="#features">Features</a></li>
                 <li><a href="#compatibility">Tools</a></li>
@@ -991,6 +1243,138 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wrap Feature Section -->
+    <section class="wrap-feature" id="wrap">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">Killer Feature</div>
+                <h2 class="section-title">clauder wrap</h2>
+                <p class="section-desc">Run Claude Code with real-time inter-agent communication.</p>
+            </div>
+
+            <div class="wrap-demo">
+                <div class="terminal-pair">
+                    <!-- Terminal 1: Backend -->
+                    <div class="terminal">
+                        <div class="terminal-header">
+                            <div class="terminal-dots">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                            </div>
+                            <div class="terminal-title">backend ~ clauder wrap</div>
+                        </div>
+                        <div class="terminal-body">
+                            <div class="terminal-line">
+                                <span class="prompt">Claude></span> Working on the API endpoint...
+                            </div>
+                            <div class="terminal-line tool-call">
+                                <span class="tool-name">mcp__clauder__send_message</span>
+                            </div>
+                            <div class="terminal-line tool-params">
+                                <span class="param-key">to:</span> <span class="param-value">"frontend-instance"</span>
+                            </div>
+                            <div class="terminal-line tool-params">
+                                <span class="param-key">content:</span> <span class="param-value">"New endpoint ready: GET /api/users/:id"</span>
+                            </div>
+                            <div class="terminal-line success">
+                                <span class="check-icon">&#10003;</span> Message sent
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Connection Arrow -->
+                    <div class="connection-flow">
+                        <div class="flow-line"></div>
+                        <div class="flow-arrow">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </div>
+                        <div class="flow-label">real-time</div>
+                    </div>
+
+                    <!-- Terminal 2: Frontend -->
+                    <div class="terminal">
+                        <div class="terminal-header">
+                            <div class="terminal-dots">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                            </div>
+                            <div class="terminal-title">frontend ~ clauder wrap</div>
+                        </div>
+                        <div class="terminal-body">
+                            <div class="terminal-line">
+                                <span class="prompt">Claude></span> Building the React components...
+                            </div>
+                            <div class="terminal-line notification">
+                                <span class="notif-icon">&#9889;</span> [You have a new message]
+                            </div>
+                            <div class="terminal-line tool-call">
+                                <span class="tool-name">mcp__clauder__get_messages</span>
+                            </div>
+                            <div class="terminal-line message-received">
+                                <span class="from-label">From backend:</span>
+                                <span class="message-content">"New endpoint ready: GET /api/users/:id"</span>
+                            </div>
+                            <div class="terminal-line">
+                                <span class="prompt">Claude></span> Updating React Query hooks...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="wrap-features">
+                    <div class="wrap-feature-item">
+                        <div class="wrap-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+                                <path d="M12 6v6l4 2"/>
+                            </svg>
+                        </div>
+                        <div class="wrap-text">
+                            <h4>Auto-prompts when idle</h4>
+                            <p>Won't interrupt you mid-thought</p>
+                        </div>
+                    </div>
+                    <div class="wrap-feature-item">
+                        <div class="wrap-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                                <line x1="8" y1="21" x2="16" y2="21"/>
+                                <line x1="12" y1="17" x2="12" y2="21"/>
+                            </svg>
+                        </div>
+                        <div class="wrap-text">
+                            <h4>Full PTY passthrough</h4>
+                            <p>Feels like native Claude Code</p>
+                        </div>
+                    </div>
+                    <div class="wrap-feature-item">
+                        <div class="wrap-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                        </div>
+                        <div class="wrap-text">
+                            <h4>Multi-agent coordination</h4>
+                            <p>Frontend + Backend in sync</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="wrap-command">
+                    <code>$ clauder wrap</code>
+                    <span class="wrap-hint">Run instead of <code>claude</code> to enable messaging</span>
                 </div>
             </div>
         </div>
